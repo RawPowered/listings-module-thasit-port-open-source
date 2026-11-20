@@ -1,31 +1,17 @@
 # Portable Listings Module
 
-**Open-source listing management foundation inspired by the Thasit Listings concept.** Bring listings, categories, images, moderation and inquiries into a custom platform without adopting the whole Thasit application.
+Open-source, platform-neutral **listing management foundation** inspired by the Thasit Listings concept. This is an independent implementation, not an exact export of private Thasit code.
 
-> **Provenance:** This is an independent portable implementation, not an exact source-code extraction. The Thasit Listings implementation was not located in the currently accessible source trees. No private Thasit code, credentials or customer data has been published.
+## Choose an integration
 
-## Choose your integration
+| Branch | Use |
+| --- | --- |
+| `main` | Portable listing schema and backend contract for custom platforms |
+| [`integrations/lovable`](../../tree/integrations/lovable) | Supabase/Postgres RLS, typed Lovable client and build prompt |
+| [`integrations/replit`](../../tree/integrations/replit) | Replit starter and integration instructions |
 
-| Branch | Target | Integration |
-| --- | --- | --- |
-| `main` | Custom PHP platforms | PDO library + MySQL / SQLite DDL, host-provided authentication |
-| `integrations/lovable` | Lovable + Supabase | PostgreSQL migration with RLS, React/TypeScript client and builder instructions |
-| `integrations/replit` | Replit / Node | Standalone Express + SQLite starter and builder instructions |
+This repository defines tenants, categories, listings, image references, publication review, filters, and guarded inquiries. Host platforms must provide identity, permissions, upload validation, abuse prevention and deployment.
 
-### Scope
+See [Portability guide](docs/PORTABILITY.md), [JSON Schema](contracts/listing.schema.json), and the platform branch instructions. Never treat an adapter as a production-ready one-click installer.
 
-Listing lifecycle (draft → review → published → archived), multi-tenant IDs, categories, filtering, media references, configurable attributes, and guarded inquiries. **No payment processing, escrow, messaging service, image processing or hosting service is bundled.**
-
-### Portability rules
-
-- Authentication, authorization and tenant resolution belong to the host.
-- Never trust tenant, owner, role, or publication state from public request bodies.
-- Public views must only expose published, public records; inquiries require abuse controls.
-- Use price in integer minor currency units. Render all user-provided text safely.
-- The API contract in `contracts/` applies to other stacks; adapters are reference implementations, not guaranteed drop-ins.
-
-See `docs/PORTABILITY.md` and the relevant integration branch for instructions. Contributions are welcome after security and compatibility review.
-
-## License
-
-MIT. © RawPowered.
+MIT © RawPowered.
