@@ -120,8 +120,8 @@ begin
      raise exception 'Only tenant moderators may publish';
    end if;
    if old.status='published' and new.status='published' and
-      (new.title,new.summary,new.description,new.price_minor,new.category_id,new.attributes,new.visibility)
-       is distinct from (old.title,old.summary,old.description,old.price_minor,old.category_id,old.attributes,old.visibility)
+      (new.title,new.summary,new.description,new.price_minor,new.category_id,new.attributes,new.visibility,new.listing_type,new.currency,new.location_label,new.latitude,new.longitude)
+       is distinct from (old.title,old.summary,old.description,old.price_minor,old.category_id,old.attributes,old.visibility,old.listing_type,old.currency,old.location_label,old.latitude,old.longitude)
        and not public.listings_can_moderate(old.tenant_id) then
      new.status := 'pending';
    end if;
@@ -171,10 +171,10 @@ create policy media_read on public.listing_media for select to anon,authenticate
 );
 create policy media_insert on public.listing_media for insert to authenticated with check (
  exists (select 1 from public.listings l where l.id=listing_media.listing_id and l.tenant_id=listing_media.tenant_id and
- (l.owner_id=(select auth.uid()) or public.listings_can_moderate(l.tenant_id)))
+ (l.owner_id=(select auth.uid()) or public.listings_can_moderate(l.tenant_id)) and (l.status <> 'published' or public.listings_can_moderate(l.tenant_id)))
 );
 create policy media_delete on public.listing_media for delete to authenticated using (
  exists (select 1 from public.listings l where l.id=listing_media.listing_id and l.tenant_id=listing_media.tenant_id and
- (l.owner_id=(select auth.uid()) or public.listings_can_moderate(l.tenant_id)))
+ (l.owner_id=(select auth.uid()) or public.listings_can_moderate(l.tenant_id)) and (l.status <> 'published' or public.listings_can_moderate(l.tenant_id)))
 );
 -- Inquiries: no API read/write policies. Use protected server functions and auditable permissions.
