@@ -2,6 +2,12 @@
 
 Open-source, platform-neutral **listing management foundation** inspired by the Thasit Listings concept. This is an independent implementation, not an exact export of private Thasit code.
 
+## First shareable preview
+
+**White-label Marketplace Starter v0.1.0 Beta 1** is available as a [frozen release-candidate branch](../../tree/releases/marketplace-lovable-v0.1.0-beta.1). It includes the Lovable/Supabase marketplace model, editable branding, four ordered database migrations, and security setup documentation.
+
+**This is a public developer preview, not a completed production application.** The formal GitHub Release is not yet published; see [release publishing instructions](../../blob/releases/marketplace-lovable-v0.1.0-beta.1/docs/PUBLISH_GITHUB_RELEASE.md).
+
 ## Choose an integration
 
 | Branch | Use |
