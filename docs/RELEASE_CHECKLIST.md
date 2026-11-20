@@ -1,5 +1,11 @@
 # Release verification record — marketplace-lovable-v0.1.0-beta.1
 
+## Publication state
+
+- Frozen versioned branch: `releases/marketplace-lovable-v0.1.0-beta.1`
+- **Formal GitHub Release/tag: NOT YET CREATED.** This is a release candidate snapshot. Publish a GitHub pre-release from the frozen branch using `docs/PUBLISH_GITHUB_RELEASE.md`.
+- Versioned branch is publicly browsable and downloadable as a ZIP through GitHub.
+
 ## Source-level evidence
 
 | Gate | Result | Evidence |

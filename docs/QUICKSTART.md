@@ -4,7 +4,7 @@ This release is a **source-and-database starter**, not a one-click application i
 
 ## 1. Pick your branch/archive
 
-Use the exact `marketplace-lovable-v0.1.0-beta.1` GitHub release tag, or its corresponding marketplace branch. The top-level `main` branch does not contain this schema.
+Use the frozen source branch `releases/marketplace-lovable-v0.1.0-beta.1` (GitHub: Code → Download ZIP), or a GitHub Release created from that exact branch. The top-level `main` branch does not contain this schema. The GitHub Release/tag is not yet published.
 
 ## 2. Establish authentication
 

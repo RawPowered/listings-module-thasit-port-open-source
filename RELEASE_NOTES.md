@@ -33,7 +33,7 @@ Untrusted file uploads, public inquiry intake, document delivery and payments re
 
 ## What to download
 
-Use the auto-generated **Source code (zip)** archive attached to this GitHub release. It contains the complete white-label Lovable marketplace starter from this tag.
+Use the versioned **`releases/marketplace-lovable-v0.1.0-beta.1` branch** and choose Code → Download ZIP. Once a formal GitHub pre-release is published from that branch, GitHub also provides a Source code (zip) archive. No standalone built installer is supplied.
 
 Do **not** substitute the repository's `main` branch or the plain `integrations/lovable` branch for this release, as their schemas and migration sequences differ.
 
