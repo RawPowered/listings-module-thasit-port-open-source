@@ -2,7 +2,7 @@
 
 This branch shares the **same Supabase/PostgreSQL backend and RLS model** as the Lovable adapter. Replit is suitable for an integrated app build via Replit Agent; no PHP runtime is required.
 
-1. In Replit, create an app or import this GitHub repository if your workspace supports repository import.
+1. In Replit, use **Import from GitHub** (supported by Replit's official Git integration) or create an app and supply the repository URL to Agent. When importing, select the `integrations/replit` branch, not the default `main` branch.
 2. Point Replit Agent to `REPLIT_PROMPT.md` and `LOVABLE_PROMPT.md`; have it generate the React UI and data wiring using `src/lib/listings.ts`.
 3. Connect Supabase and apply `supabase/migrations/001_listings.sql` once in the Supabase SQL editor.
 4. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` for client code using the environment UI. A public anon/publishable key is acceptable in client apps **only with RLS enabled**; never add a service-role key to client code.
