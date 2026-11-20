@@ -35,10 +35,13 @@ begin
   if p_ttl_seconds < 300 or p_ttl_seconds > 604800
   then raise exception 'Invalid invitation lifetime'; end if;
   perform public.marketplace_consume_limit('invite_issue',15,86400);
-  v_token := encode(gen_random_bytes(32),'hex');
+  -- Two independent v4 UUIDs give 244 random bits; all functions below
+  -- are PostgreSQL built-ins available through pg_catalog with search_path=''.
+  v_token := replace(gen_random_uuid()::text,'-','')
+    || replace(gen_random_uuid()::text,'-','');
   insert into public.marketplace_invitations(
     token_hash,tenant_id,issued_by,expires_at)
-  values(encode(digest(v_token,'sha256'),'hex'),p_tenant,auth.uid(),
+  values(encode(sha256(convert_to(v_token,'UTF8')),'hex'),p_tenant,auth.uid(),
     clock_timestamp()+make_interval(secs=>p_ttl_seconds));
   return v_token;
 end; $$;
@@ -56,7 +59,7 @@ begin
   then return null; end if;
 
   select * into v_inv from public.marketplace_invitations
-    where token_hash=encode(digest(p_token,'sha256'),'hex') for update;
+    where token_hash=encode(sha256(convert_to(p_token,'UTF8')),'hex') for update;
   if not found or v_inv.redeemed_at is not null or v_inv.revoked_at is not null
     or v_inv.expires_at < clock_timestamp()
   then return null; end if;
