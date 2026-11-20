@@ -1,33 +1,31 @@
-# Portable Listings Module — Lovable Adapter
+# White-label Marketplace Starter — Lovable
 
-This branch is a **Lovable + Supabase/Postgres reference implementation** of the public-domain listing-management concept. It is independently authored and is not a byte-for-byte extraction from Thasit's private implementation.
+Brand-neutral marketplace architecture for requests, proposals, collaborations, and supervised completion. This branch derives from the portable listings Lovable adapter; it is not dedicated to any particular industry, product, company, theme, or payment service.
 
-## Quick adoption
+## Use it
 
-1. Create a Lovable project backed by **your own Supabase project** (not Lovable Cloud managed storage, which does not expose your Supabase SQL editor). Connect it using Lovable's Supabase integration. If the project already uses Lovable Cloud, use a separate external-Supabase project and migration workflow rather than assuming the SQL editor exists.
-2. Run [supabase/migrations/001_listings.sql](supabase/migrations/001_listings.sql) through the Supabase SQL editor, on a fresh project or after reviewing naming conflicts. It adds tables, RLS policies and a workspace-bootstrap RPC.
-3. Open [LOVABLE_PROMPT.md](LOVABLE_PROMPT.md) and paste its content into Lovable. Provide Lovable this repo branch URL: https://github.com/RawPowered/listings-module-thasit-port-open-source/tree/integrations/lovable
-4. Copy [src/lib/listings.ts](src/lib/listings.ts) into the Lovable project and reuse its typed methods. Configure the project's existing Supabase client and auth flow.
-5. Sign in; the app calls `create_listings_workspace` one time for a workspace. Owners can submit listings for moderation. **Publishing requires a workspace admin/owner** via a privileged workflow (see notes below).
+1. Start with your own development Supabase project, with Auth enabled and an externally accessible SQL editor.
+2. Apply `supabase/migrations/001_listings.sql` then `supabase/migrations/002_marketplace_core.sql` in order. **Do not apply to an unreviewed production database.**
+3. Copy `src/lib/listings.ts`, `src/lib/marketplace.ts`, `src/config/site-config.ts`, and `src/styles/brand-tokens.css` into your Lovable project.
+4. Configure your product's **name, logo, colors, fonts, terminology, navigation and features** in `src/config/site-config.ts`; see `docs/BRANDING.md`.
+5. Provide Lovable `LOVABLE_PROMPT.md` and this branch URL. Existing host design systems should be preserved.
+6. Run the negative and positive tests in `docs/ACCEPTANCE.md`, including multi-user, cross-tenant and concurrency scenarios.
 
-**Important:** Lovable may generate source from the branch URL and supplied files; do not assume it can import an arbitrary existing repository as a native project. Copy SQL and client code explicitly if the builder cannot fetch private/public repo content.
+**Status: architecture, SQL and adapter scaffold, not a running app or production security certification.** The consuming app must supply React views, Supabase client initialization, authenticated onboarding, notification delivery, private file storage policy, abuse/rate controls, and any real payment integration.
 
-### Capabilities
-- Public listing feed with search, category, type and price filtering
-- Details and photo gallery using *stored HTTPS image URLs* (upload authorization is host-managed)
-- Draft → pending → published → archived listing lifecycle
-- Owner dashboard and admin moderation
-- Workspace/tenant isolation via PostgreSQL RLS
-- Public inquiry submission **not enabled by default** (requires spam protection and a server endpoint)
+### Included
 
-### Security model
-Authentication comes from Supabase Auth. Workspace membership, owner identity and publication privileges are checked in the database. **Never put a Supabase service-role key in a client app.** Only publish after an admin-mediated review. For launch, implement the admin screen using the RLS-compatible owner account; the database trigger enforces publication privilege. Public inquiry intake must pass a rate-limited CAPTCHA-backed server function and consent requirements; do not create an anonymous INSERT policy.
+- Listings, categories, tenant memberships, moderation, and RLS from the Lovable adapter
+- Fixed, range and open budget configuration
+- Proposals, one accepted engagement per listing, guarded lifecycle RPCs
+- Participant-only messaging, deliverable metadata and revision requests
+- Reports and server-written event records
+- Plain visual tokens and configurable terminology for any industry
 
-### Related branches
-- [main](../../tree/main): portable core and integration contract
-- [integrations/replit](../../tree/integrations/replit): Replit / Node integration
+### Intentionally not included
 
-### Provenance and scope
-Portable independent reconstruction. Review before use in production. This is not a payment platform, and image uploads, payments, analytics and automated moderation are not supplied.
+No hardcoded brand, image assets, UI library, payment processor, wallet, escrow, public document uploads, provider verification, or claims of ready-to-launch security. Set the payments feature to disabled until a real trusted integration is implemented.
 
-License: MIT.
+Docs: [Architecture](docs/ARCHITECTURE.md) · [Flows](docs/FLOWS.md) · [Branding](docs/BRANDING.md) · [Acceptance](docs/ACCEPTANCE.md).
+
+MIT. The branch is an independent generic starter, not a private code export.

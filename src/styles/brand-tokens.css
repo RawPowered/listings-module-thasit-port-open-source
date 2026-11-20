@@ -1,0 +1,18 @@
+:root {
+  color-scheme: light;
+  --brand-primary: #354054; --brand-accent: #607087;
+  --brand-bg: #f8f9fb; --brand-surface: #fff; --brand-text: #17202c;
+  --brand-border: #dee3ea; --brand-radius: 8px; --brand-focus: #245bc5;
+  --brand-font-body: system-ui, sans-serif;
+  --brand-font-heading: system-ui, sans-serif;
+}
+[data-theme="dark"] {
+  color-scheme: dark;
+  --brand-bg: #14191f; --brand-surface: #202730;
+  --brand-text: #f4f6f8; --brand-border: #434e5a; --brand-focus: #8eb4ff;
+}
+:focus-visible { outline: 3px solid var(--brand-focus); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+/* Extend or map these variables to the host design system. No component-library lock-in. */
