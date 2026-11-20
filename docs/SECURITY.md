@@ -23,3 +23,6 @@
 8. Inspect every table's RLS configuration after migration. Run on a disposable Supabase project first.
 
 This reference does not replace a production penetration test or a legal/compliance review.
+
+
+Apply the **listings-only** `002_listings_security_baseline.sql` after 001, then follow [security setup](SECURITY_BASELINE.md) and [structural SQL checks](../supabase/tests/verify_security.sql). Moderation requires TOTP MFA AAL2; arbitrary browser image URL uploads are disabled.
