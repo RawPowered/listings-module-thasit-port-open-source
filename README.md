@@ -4,7 +4,7 @@ This branch is a **Lovable + Supabase/Postgres reference implementation** of the
 
 ## Quick adoption
 
-1. Create or open a Lovable project. Connect Supabase or the database integration supported by your Lovable project.
+1. Create a Lovable project backed by **your own Supabase project** (not Lovable Cloud managed storage, which does not expose your Supabase SQL editor). Connect it using Lovable's Supabase integration. If the project already uses Lovable Cloud, use a separate external-Supabase project and migration workflow rather than assuming the SQL editor exists.
 2. Run [supabase/migrations/001_listings.sql](supabase/migrations/001_listings.sql) through the Supabase SQL editor, on a fresh project or after reviewing naming conflicts. It adds tables, RLS policies and a workspace-bootstrap RPC.
 3. Open [LOVABLE_PROMPT.md](LOVABLE_PROMPT.md) and paste its content into Lovable. Provide Lovable this repo branch URL: https://github.com/RawPowered/listings-module-thasit-port-open-source/tree/integrations/lovable
 4. Copy [src/lib/listings.ts](src/lib/listings.ts) into the Lovable project and reuse its typed methods. Configure the project's existing Supabase client and auth flow.
