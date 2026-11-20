@@ -19,7 +19,7 @@ Brand-neutral marketplace architecture for requests, proposals, collaborations, 
 - Fixed, range and open budget configuration
 - Proposals, one accepted engagement per listing, guarded lifecycle RPCs
 - Participant-only messaging, deliverable metadata and revision requests
-- Optional MFA-gated moderation, server-enforced rate caps, scope integrity, least-privilege grants and one-use member invitations (see `docs/SECURITY_BASELINE.md`)
+- Mandatory MFA-gated moderation, server-enforced rate caps, scope integrity, least-privilege grants and one-use member invitations (see `docs/SECURITY_BASELINE.md`)
 - Reports and server-written event records
 - Plain visual tokens and configurable terminology for any industry
 

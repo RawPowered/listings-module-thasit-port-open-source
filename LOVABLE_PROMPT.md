@@ -24,7 +24,7 @@ Use responsive layouts, semantic controls, keyboard flows, loading/empty/error s
 
 Implement TOTP MFA enrollment and challenge using Supabase Auth. Workspace owners/admins cannot publish listings, moderate categories or issue invitations until their session is AAL2. In the owner dashboard add an explicit "Complete MFA setup" state; do not silently bypass it.
 
-Create an owner-only invite interface invoking `marketplace_issue_invitation` with short TTL; display the opaque token once without putting it in analytics, event logs or query strings. Add a redemption page that calls `marketplace_redeem_invitation` for signed-in members. Treat a null return as invalid/expired; no open self-join or self-promotion.
+Create a moderator-only (owner/admin, AAL2) invite interface invoking `marketplace_issue_invitation` with short TTL; display the opaque token once without putting it in analytics, event logs or query strings. Add a redemption page that calls `marketplace_redeem_invitation` for signed-in members. Treat a null return as invalid/expired; no open self-join or self-promotion.
 
 Respect database-enforced request throttles. Never try to work around a rejected rate limit by using a service key. No untrusted listing-media URL insertion. Apply `security/headers.template` only after adapting origins and validating the actual generated production build; the template alone does not configure Lovable hosting.
 

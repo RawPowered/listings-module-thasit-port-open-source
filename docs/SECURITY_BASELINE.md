@@ -44,3 +44,7 @@ No financial controls are asserted here. If a payment processor is connected, im
 ## Residual risks and explicit nonclaims
 
 This is **not** a penetration test, complete audit, secure Lovable deployment guarantee, automated CAPTCHA, device attestation, malware scanning, provider KYC or payment compliance. Database migrations enforce a strong baseline, but each deployment must verify its real auth, hosting and client generated code. Run \`node scripts/security-preflight.mjs\` before publishing code.
+
+## Database hygiene
+
+Rate-counter rows accumulate until removed. Schedule a privileged maintenance task to delete expired counter buckets, for example `DELETE FROM public.marketplace_rate_buckets WHERE bucket_start < now() - interval '14 days';`. Do not expose cleanup privileges in the browser. Retention for personal data, private messages, files and reports needs a separate product-specific policy.
