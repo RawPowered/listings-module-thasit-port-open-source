@@ -23,3 +23,10 @@
 8. Inspect every table's RLS configuration after migration. Run on a disposable Supabase project first.
 
 This reference does not replace a production penetration test or a legal/compliance review.
+
+
+## 003 and 004 security migrations
+
+The white-label marketplace branch adds `003_security_baseline.sql` and `004_invitation_onboarding.sql`, which provide MFA-gated moderation, stronger state/provenance guards, participant membership checks, rate caps and one-time invitations. They are **not applied by merely cloning the branch**.
+
+Follow [the security baseline](SECURITY_BASELINE.md), then run the read-only [SQL assertions](../supabase/tests/verify_security.sql) and the role matrix in [ACCEPTANCE.md](ACCEPTANCE.md). Configure production security headers separately.

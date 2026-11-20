@@ -1,0 +1,11 @@
+# Example production response headers; HOST PROVIDER must translate and apply.
+# NOT deployed automatically in Lovable. Replace origins, test CSP against built app.
+# HTTPS required before enabling HSTS. Do not enable includeSubDomains casually.
+Strict-Transport-Security: max-age=31536000
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: __ASSET_ORIGIN__; font-src 'self' data:; connect-src 'self' __SUPABASE_HTTPS_ORIGIN__ __SUPABASE_WSS_ORIGIN__; upgrade-insecure-requests
+# If Lovable generates runtime inline styles/scripts, adopt hashes or nonces;
+# do not broadly add unsafe-inline or unsafe-eval.
