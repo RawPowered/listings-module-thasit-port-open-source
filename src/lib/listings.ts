@@ -2,17 +2,23 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type ListingStatus = "draft" | "pending" | "published" | "archived";
 export type ListingVisibility = "public" | "unlisted" | "private";
+export type BudgetMode = "open" | "fixed" | "range";
 export type Listing = {
   id: string; tenant_id: string; owner_id: string; category_id: string | null;
   title: string; slug: string; summary: string; description: string;
   listing_type: string; status: ListingStatus; visibility: ListingVisibility;
-  price_minor: number | null; currency: string; location_label: string;
+  price_minor: number | null; budget_mode: BudgetMode;
+  budget_max_minor: number | null; proposal_deadline: string | null;
+  currency: string; location_label: string;
   latitude: number | null; longitude: number | null;
   attributes: Record<string, string | number | boolean | null>;
   created_at: string; updated_at: string; published_at: string | null;
 };
 export type ListingInput = Pick<Listing, "title" | "summary" | "description" | "listing_type" | "visibility" | "price_minor" | "currency" | "location_label" | "latitude" | "longitude" | "attributes"> & {
   category_id?: string | null;
+  budget_mode?: BudgetMode;
+  budget_max_minor?: number | null;
+  proposal_deadline?: string | null;
 };
 export type BrowseFilter = { q?: string; type?: string; categoryId?: string; minPriceMinor?: number; maxPriceMinor?: number; page?: number; perPage?: number };
 
@@ -62,7 +68,17 @@ export function listingsClient(db: SupabaseClient) {
     async create(tenantId: string, input: ListingInput) {
       const { data: user, error: authError } = await db.auth.getUser();
       if (authError || !user.user) throw authError ?? new Error("Sign in required");
-      const { data, error } = await db.from("listings").insert({ ...input, tenant_id: tenantId, owner_id: user.user.id, status: "draft" }).select().single();
+      const budgetMode: BudgetMode = input.budget_mode ??
+        (input.price_minor === null ? "open" : input.budget_max_minor != null ? "range" : "fixed");
+      const { data, error } = await db.from("listings").insert({
+        ...input,
+        budget_mode: budgetMode,
+        budget_max_minor: input.budget_max_minor ?? null,
+        proposal_deadline: input.proposal_deadline ?? null,
+        tenant_id: tenantId,
+        owner_id: user.user.id,
+        status: "draft"
+      }).select().single();
       if (error) throw error;
       return data as Listing;
     },
