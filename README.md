@@ -2,6 +2,8 @@
 
 Brand-neutral marketplace architecture for requests, proposals, collaborations, and supervised completion. This branch derives from the portable listings Lovable adapter; it is not dedicated to any particular industry, product, company, theme, or payment service.
 
+**First public preview:** [Release notes](RELEASE_NOTES.md) · [Quickstart](docs/QUICKSTART.md) · [Release checks](docs/RELEASE_CHECKLIST.md).
+
 ## Use it
 
 1. Start with your own development Supabase project, with Auth and TOTP MFA enabled; keep email verification on.
