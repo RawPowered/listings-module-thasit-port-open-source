@@ -2,7 +2,7 @@
 -- All protected transitions use SECURITY DEFINER RPC with explicit auth checks.
 -- No uploads, money movement, open invitations or generic admin service keys.
 alter table public.listings
-  add column if not exists budget_mode text not null default 'fixed'
+  add column if not exists budget_mode text not null default 'open'
     check (budget_mode in ('fixed','range','open')),
   add column if not exists budget_max_minor bigint check (budget_max_minor >= 0),
   add column if not exists proposal_deadline timestamptz;
@@ -12,8 +12,10 @@ alter table public.listings
     or (budget_mode = 'fixed' and price_minor is not null and budget_max_minor is null)
     or (budget_mode = 'range' and price_minor is not null and budget_max_minor is not null and budget_max_minor >= price_minor)
   ) not valid;
--- Existing rows may need a pre-migration budget cleanup before validating this constraint.
--- Enforce no new invalid budgets, then validate only after existing rows are remediated.
+-- Existing listing records with a non-null price_minor need explicit budget_mode='fixed' migration
+-- before running VALIDATE CONSTRAINT. New drafts default to open and require no price.
+update public.listings set budget_mode='fixed' where price_minor is not null and budget_max_minor is null;
+alter table public.listings validate constraint listings_budget_consistency;
 
 create table public.marketplace_proposals (
   id uuid primary key default gen_random_uuid(),
