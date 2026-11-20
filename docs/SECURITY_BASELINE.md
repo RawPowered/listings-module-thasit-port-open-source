@@ -31,7 +31,7 @@
 
 A new account can create a workspace, but it **cannot moderate** until its session is upgraded to MFA AAL2. After MFA enrollment and challenge, create a single-use membership invitation with \`marketplace_issue_invitation\`. Share the opaque token privately, never log it or include it in analytics/query strings. The new authenticated user redeems with \`marketplace_redeem_invitation\`. That user gets the \`member\` role only. Neither self-join nor self-promotion exists.
 
-**Important:** token validation and some rejected API requests raise an exception, which rolls back PostgreSQL transaction counters. Add external API/IP-level throttling (gateway/Edge Function/WAF) to resist brute-force and unauthenticated floods. 256-bit tokens are intentionally not guessable.
+**Important:** token validation and some rejected API requests raise an exception, which rolls back PostgreSQL transaction counters. Add external API/IP-level throttling (gateway/Edge Function/WAF) to resist brute-force and unauthenticated floods. High-entropy 64-character hexadecimal invitation tokens are intentionally impractical to guess.
 
 ## Sensitive file workflows
 
