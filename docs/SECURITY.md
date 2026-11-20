@@ -23,3 +23,6 @@
 8. Inspect every table's RLS configuration after migration. Run on a disposable Supabase project first.
 
 This reference does not replace a production penetration test or a legal/compliance review.
+
+
+Apply **both** ordered migrations, including `002_listings_security_baseline.sql`, to enable MFA-gated moderation, timestamp integrity, media write restrictions and workspace throttle. See [Security baseline](SECURITY_BASELINE.md) and [SQL checks](../supabase/tests/verify_security.sql). The SQL does not configure Supabase Auth MFA or hosting headers for you.

@@ -5,10 +5,10 @@ This branch is a **Lovable + Supabase/Postgres reference implementation** of the
 ## Quick adoption
 
 1. Create a Lovable project backed by **your own Supabase project** (not Lovable Cloud managed storage, which does not expose your Supabase SQL editor). Connect it using Lovable's Supabase integration. If the project already uses Lovable Cloud, use a separate external-Supabase project and migration workflow rather than assuming the SQL editor exists.
-2. Run [supabase/migrations/001_listings.sql](supabase/migrations/001_listings.sql) through the Supabase SQL editor, on a fresh project or after reviewing naming conflicts. It adds tables, RLS policies and a workspace-bootstrap RPC.
+2. Run [001_listings.sql](supabase/migrations/001_listings.sql) and then [002_listings_security_baseline.sql](supabase/migrations/002_listings_security_baseline.sql) in the Supabase SQL editor of a reviewed development project. The second migration enforces MFA-protected moderation, immutable listing provenance, and safer uploads.
 3. Open [LOVABLE_PROMPT.md](LOVABLE_PROMPT.md) and paste its content into Lovable. Provide Lovable this repo branch URL: https://github.com/RawPowered/listings-module-thasit-port-open-source/tree/integrations/lovable
 4. Copy [src/lib/listings.ts](src/lib/listings.ts) into the Lovable project and reuse its typed methods. Configure the project's existing Supabase client and auth flow.
-5. Sign in; the app calls `create_listings_workspace` one time for a workspace. Owners can submit listings for moderation. **Publishing requires a workspace admin/owner** via a privileged workflow (see notes below).
+5. Sign in; the app calls `create_listings_workspace` one time for a workspace. Owners can submit listings for moderation. **Publishing requires a workspace admin/owner with a verified MFA AAL2 session** via a privileged workflow (see notes below).
 
 **Important:** Lovable may generate source from the branch URL and supplied files; do not assume it can import an arbitrary existing repository as a native project. Copy SQL and client code explicitly if the builder cannot fetch private/public repo content.
 
@@ -20,10 +20,18 @@ This branch is a **Lovable + Supabase/Postgres reference implementation** of the
 - Workspace/tenant isolation via PostgreSQL RLS
 - Public inquiry submission **not enabled by default** (requires spam protection and a server endpoint)
 
+### Secure-by-default additions
+
+- Moderation, category changes and publishing require AAL2 MFA.
+- Client writes to arbitrary third-party media URLs are blocked by SQL; use a vetted server upload service.
+- Successful workspace creations are throttled in the database; add IP/edge limits before public signup.
+- Run [security acceptance](supabase/tests/verify_security.sql) and review [security setup](docs/SECURITY_BASELINE.md). Cloning does not apply migrations or configure Auth.
+
 ### Security model
 Authentication comes from Supabase Auth. Workspace membership, owner identity and publication privileges are checked in the database. **Never put a Supabase service-role key in a client app.** Only publish after an admin-mediated review. For launch, implement the admin screen using the RLS-compatible owner account; the database trigger enforces publication privilege. Public inquiry intake must pass a rate-limited CAPTCHA-backed server function and consent requirements; do not create an anonymous INSERT policy.
 
 ### Related branches
+- [White-label full marketplace starter](../../tree/integrations/lovable-marketplace-starter): requests, offers, workrooms and four ordered security/marketplace migrations
 - [main](../../tree/main): portable core and integration contract
 - [integrations/replit](../../tree/integrations/replit): Replit / Node integration
 
