@@ -25,6 +25,12 @@ export function marketplaceClient(db: SupabaseClient) {
     },
     submitProposal: (tenantId: string, listingId: string, amountMinor: number | null, message: string, estimatedDays: number | null = null) =>
       rpc<string>("marketplace_submit_proposal", { p_tenant: tenantId, p_listing: listingId, p_amount: amountMinor, p_message: message, p_days: estimatedDays }),
+    // These RPCs enforce moderator AAL2 and one-use, time-limited membership.
+    // Never log invite tokens, store them in analytics, or place them in URL queries.
+    issueInvitation: (tenantId: string, ttlSeconds = 86400) =>
+      rpc<string>("marketplace_issue_invitation", { p_tenant: tenantId, p_ttl_seconds: ttlSeconds }),
+    redeemInvitation: (token: string) =>
+      rpc<string | null>("marketplace_redeem_invitation", { p_token: token }),
     withdrawProposal: (tenantId: string, proposalId: string) =>
       rpc<void>("marketplace_withdraw_proposal", { p_tenant: tenantId, p_proposal: proposalId }),
     acceptProposal: (tenantId: string, proposalId: string) =>
