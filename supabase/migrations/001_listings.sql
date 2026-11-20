@@ -1,6 +1,6 @@
 -- Portable Listings / Lovable v0.1: PostgreSQL 15+, Supabase Auth.
 -- Apply via SQL editor on a reviewed project. No demo customer data.
-create extension if not exists pgcrypto;
+-- Only PostgreSQL built-in UUID/randomness primitives are needed.
 
 create table if not exists public.listing_tenants (
   id uuid primary key default gen_random_uuid(),
@@ -60,7 +60,7 @@ create table if not exists public.listings (
  owner_id uuid not null references auth.users(id),
  category_id uuid,
  title text not null check (char_length(title) between 1 and 180),
- slug text not null default (encode(gen_random_bytes(8),'hex')),
+ slug text not null default (replace(gen_random_uuid()::text,'-','')),
  summary text not null default '' check (char_length(summary)<=500),
  description text not null default '' check (char_length(description)<=50000),
  listing_type text not null default 'general' check (listing_type ~ '^[a-z][a-z0-9_-]{0,39}$'),
